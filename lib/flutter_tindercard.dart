@@ -242,7 +242,7 @@ class _TinderSwapCardState extends State<TinderSwapCard>
 
     frontCardAlign = _cardAligns[_cardAligns.length - 1];
     _animationController = new AnimationController(
-        vsync: this, duration: Duration(milliseconds: widget._animDuration));
+        vsync: this, duration: Duration(milliseconds: 200));
     _animationController.addListener(() => setState(() {}));
     _animationController.addStatusListener((AnimationStatus status) {
       int index = widget._totalNum - widget._stackNum - _currentFront;
@@ -327,7 +327,7 @@ class CardAnimation {
       }
     } else if (_TinderSwapCardState._trigger == TriggerDirection.left) {
       endX = beginAlign.x - swipeEdge;
-      endY = beginAlign.y + 0.5;
+      endY = beginAlign.y - 0.5;
     }
     /* Trigger Swipe Up or Down */
     else if (_TinderSwapCardState._trigger == TriggerDirection.up ||
@@ -342,7 +342,7 @@ class CardAnimation {
           : (beginAlign.x < -swipeEdge ? beginAlign.x - 10.0 : baseAlign.x);
     } else {
       endX = beginAlign.x + swipeEdge;
-      endY = beginAlign.y + 0.5;
+      endY = beginAlign.y - 0.5;
     }
     return new AlignmentTween(begin: beginAlign, end: new Alignment(endX, endY))
         .animate(
