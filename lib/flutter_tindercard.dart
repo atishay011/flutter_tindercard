@@ -10,6 +10,7 @@ enum TriggerDirection { none, right, left, up, down }
 
 /// A Tinder-Like Widget.
 class TinderSwapCard extends StatefulWidget {
+  BuildContext context;
   CardBuilder _cardBuilder;
   int _totalNum;
   int _stackNum;
@@ -34,6 +35,7 @@ class TinderSwapCard extends StatefulWidget {
   TinderSwapCard(
       {@required CardBuilder cardBuilder,
       @required int totalNum,
+      @required BuildContext context,
       AmassOrientation orientation = AmassOrientation.BOTTOM,
       int stackNum = 3,
       int animDuration = 800,
@@ -75,7 +77,10 @@ class TinderSwapCard extends StatefulWidget {
       switch (orientation) {
         case AmassOrientation.BOTTOM:
           _cardAligns.add(
-              new Alignment(0.0, (0.5 / (_stackNum - 1)) * (stackNum - i)));
+              new Alignment(0.0 , 2.0/
+                            834.67 *
+                            (MediaQuery.of(context).size.height -
+                                MediaQuery.of(context).padding.top),));
           break;
         case AmassOrientation.TOP:
           _cardAligns.add(
@@ -103,7 +108,16 @@ class _TinderSwapCardState extends State<TinderSwapCard>
 
   Widget _buildCard(BuildContext context, int realIndex) {
     if (realIndex < 0) {
-      return Container();
+      return Container(
+        child : Center( 
+       child : Text("No more cards left!",
+       style : 
+       TextStyle(
+       color :  Color(0xff033C7F)
+         )
+       )
+        )
+      );
     }
     int index = realIndex - _currentFront;
 
@@ -118,7 +132,7 @@ class _TinderSwapCardState extends State<TinderSwapCard>
                     widget._swipeUp,
                     widget._swipeDown)
                 .value
-            : frontCardAlign,
+            : frontCardAlign, 
         child: Transform.rotate(
             angle: (pi / 180.0) *
                 (_animationController.status == AnimationStatus.forward
@@ -134,7 +148,8 @@ class _TinderSwapCardState extends State<TinderSwapCard>
       );
     }
 
-    return Align(
+    return Container( 
+   child : Align(
       alignment: _animationController.status == AnimationStatus.forward &&
               (frontCardAlign.x > 3.0 ||
                   frontCardAlign.x < -3.0 ||
@@ -144,7 +159,7 @@ class _TinderSwapCardState extends State<TinderSwapCard>
                   _cardAligns[index], _cardAligns[index + 1])
               .value
           : _cardAligns[index],
-      child: new SizedBox.fromSize(
+      child : SizedBox.fromSize(
         size: _animationController.status == AnimationStatus.forward &&
                 (frontCardAlign.x > 3.0 ||
                     frontCardAlign.x < -3.0 ||
@@ -156,6 +171,7 @@ class _TinderSwapCardState extends State<TinderSwapCard>
             : _cardSizes[index],
         child: widget._cardBuilder(context, widget._totalNum - realIndex - 1),
       ),
+      )
     );
   }
 
@@ -340,9 +356,10 @@ class CardAnimation {
       endX = beginAlign.x > 0
           ? (beginAlign.x > swipeEdge ? beginAlign.x + 10.0 : baseAlign.x)
           : (beginAlign.x < -swipeEdge ? beginAlign.x - 10.0 : baseAlign.x);
-    } else {
+    } else 
+    {
       endX = beginAlign.x + swipeEdge;
-      endY = beginAlign.y - 0.5;
+      endY = beginAlign.y - 0.5;  
     }
     return new AlignmentTween(begin: beginAlign, end: new Alignment(endX, endY))
         .animate(
